@@ -1,0 +1,4 @@
+﻿
+Consultando Api´s com HttpClient no .NET 6
+
+https://marcionizzola.medium.com/consultando-api-s-com-httpclient-no-net-6-2aeb150baa2d
