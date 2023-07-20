@@ -1,6 +1,12 @@
 ﻿using ApiViaCep;
+using ApiViaCep.Refit;
+using Refit;
 using System.Text.Json;
 
+var resultGetCepRefit = await GetEnderecoRefit("03977450");
+Console.WriteLine(resultGetCepRefit.Logradouro);
+
+#region Get com HttpClient
 Console.WriteLine("Digite o seu CEP:");
 var cep = Console.ReadLine();
 
@@ -22,6 +28,9 @@ try
     Console.WriteLine(responseBody);
 
     var responseObj = JsonSerializer.Deserialize<ViaCepResponse>(responseBody, myJsonOptions); //deserilizar obj
+
+    // capturar somente o nome da rua
+    string nomeRua = responseObj.Logradouro;
 }
 catch (Exception e)
 {
@@ -29,4 +38,26 @@ catch (Exception e)
     Console.WriteLine("\n Erro: {0}", e.Message);
 }
 
+#endregion
+
+
+#region Get com Refit
+static async Task<ViaCepRefitResponse> GetEnderecoRefit(string cep)
+{
+    try
+    {
+        var viaCepClient = RestService.For<ICepApiService>("http://viacep.com.br");
+
+        var endereco = await viaCepClient.GetViaCepRefit(cep);
+
+        return endereco;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("\n Erro: {0}", ex.Message);
+        return null;
+    }
+}
+
+#endregion
 
