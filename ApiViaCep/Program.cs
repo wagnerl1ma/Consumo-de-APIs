@@ -61,3 +61,36 @@ static async Task<ViaCepRefitResponse> GetEnderecoRefit(string cep)
 
 #endregion
 
+
+#region teste GetFileExtension
+
+static string GetFileExtension(byte[] fileData)
+{
+    string extension = "";
+    using (MemoryStream ms = new MemoryStream(fileData))
+    {
+        using (BinaryReader reader = new BinaryReader(ms))
+        {
+            // Read the first two bytes of the file
+            byte[] buffer = reader.ReadBytes(2);
+
+            // Check for common file types
+            if (buffer[0] == 0xFF && buffer[1] == 0xD8)
+                extension = ".jpg";
+            else if (buffer[0] == 0x89 && buffer[1] == 0x50)
+                extension = ".png";
+            else if (buffer[0] == 0x47 && buffer[1] == 0x49)
+                extension = ".gif";
+            else if (buffer[0] == 0x42 && buffer[1] == 0x4D)
+                extension = ".bmp";
+            else if (buffer[0] == 0x25 && buffer[1] == 0x50)
+                extension = ".pdf";
+            else if (buffer[0] == 0xD0 && buffer[1] == 0xCF)
+                extension = ".doc";
+            else if (buffer[0] == 0x50 && buffer[1] == 0x4B)
+                extension = ".zip";
+        }
+    }
+    return extension;
+}
+#endregion
